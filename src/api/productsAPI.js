@@ -4,9 +4,10 @@ import { authHeaders } from "@/api/authAPI"
 let base_url = "products"
 
 export const productsAPI = {
-  async getItemsList(token) {
+  async getItemsList(token, searchForm = { product_name: "" }) {
+    let { product_name } = searchForm
     return axios.get(
-      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/`,
+      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/?product_name__icontains=${product_name}`,
       authHeaders(token)
     )
   },
@@ -51,6 +52,20 @@ export const productsAPI = {
   async getDateRangesList(token) {
     return axios.get(
       `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/date-ranges/`,
+      authHeaders(token)
+    )
+  },
+  async getWastageItem(token, itemId) {
+    return axios.get(
+      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/wastage-by-date-range/${itemId}`,
+      authHeaders(token)
+    )
+  },
+
+  async updateWastageItem(token, itemData) {
+    return axios.put(
+      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/wastage-by-date-range/${itemData.id}/`,
+      itemData,
       authHeaders(token)
     )
   },

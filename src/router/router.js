@@ -2,13 +2,18 @@ import { createRouter, createWebHistory } from "vue-router"
 
 import NotFoundView from "@/components/common/NotFoundView"
 import LoginView from "@/components/auth/LoginView"
-import Menu from "@/components/client/Menu"
+import MenuMainView from "@/components/client/MenuMainView"
+import MenuView from "@/components/client/MenuView"
 import ProductsView from "@/components/client/ProductsView"
+import ProductsGroupView from "@/components/client/ProductsGroupView"
+import ProductsMapView from "@/components/client/ProductsMapView"
+import MapItemView from "@/components/client/MapItemView"
 
 import store from "@/store"
 
 const routes = [
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFoundView },
+  { path: "/", redirect: { name: "products" } },
   {
     path: "/login",
     name: "login",
@@ -16,11 +21,29 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
-    path: "",
-    name: "client",
-    component: Menu,
+    path: "/menu",
+    name: "menu-main",
+    component: MenuMainView,
     meta: { requiresAuth: false },
-    children: [{ path: "products", name: "products", component: ProductsView }],
+    children: [
+      { path: "", name: "menu", component: MenuView },
+      { path: "products", name: "products", component: ProductsView },
+      {
+        path: "products-groups",
+        name: "products-groups",
+        component: ProductsGroupView,
+      },
+      {
+        path: "products-maps",
+        name: "products-maps",
+        component: ProductsMapView,
+      },
+      {
+        path: "products-maps/:id",
+        name: "products-maps-item",
+        component: MapItemView,
+      },
+    ],
   },
 ]
 

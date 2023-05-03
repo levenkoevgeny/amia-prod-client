@@ -1,9 +1,193 @@
 <template>
+  <!--product update modal-->
+  <div
+    class="modal fade"
+    id="updateProductModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+    ref="productUpdate"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form @submit.prevent="updateProduct">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Редактирование</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label class="form-label">Название продукта</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="currentProductForUpdate.product_name"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label class="form-label"
+                      >Эн. цен. (кКал), 100 г. (Брутто)</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="currentProductForUpdate.energy_value"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label class="form-label">Жиры, 100 г. (Нетто)</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="currentProductForUpdate.fats"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label class="form-label">Углеводы, 100 г. (Нетто)</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="currentProductForUpdate.carbohydrates"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label class="form-label">Белки, 100 г. (Нетто)</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="currentProductForUpdate.proteins"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              ref="closeProductUpdateModal"
+            >
+              Закрыть
+            </button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--product update modal-->
+
+  <!--wastage update modal-->
+  <div
+    class="modal fade"
+    id="updateWastageModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+    ref="wastageUpdate"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form @submit.prevent="updateWastage">
+          <div class="modal-header">
+            <h5 class="modal-title">Редактирование</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label class="form-label">Потеря, %</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      v-model="currentWastageForUpdate.percent"
+                      step="0.01"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              ref="closeWastageUpdateModal"
+            >
+              Закрыть
+            </button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--wastage update modal-->
+
   <div class="alert alert-danger" role="alert" v-if="isError">
     Ошибка приложения
   </div>
   <div class="container">
-    <h3 class="mt-3">Продукты</h3>
+    <h3 class="mt-3" v-once>Продукты</h3>
+
+    <div class="shadow-lg p-3 my-4 bg-body rounded">
+      <h5>Поиск</h5>
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="form-label">Название продукта</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="searchForm.product_name"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div
       v-if="isLoading"
       class="d-flex justify-content-center align-items-center"
@@ -12,6 +196,78 @@
       <Spinner />
     </div>
     <div v-else>
+      <div class="shadow-lg p-3 my-4 bg-body rounded">
+        <h5>Форма для добавления</h5>
+        <form @submit.prevent="addNewProduct">
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Название продукта</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="newProductForm.product_name"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label class="form-label"
+                  >Эн. цен. (кКал), 100 г. (Брутто)</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="newProductForm.energy_value"
+                  step="0.01"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label class="form-label">Белки, 100 г. (Нетто)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="newProductForm.proteins"
+                  step="0.01"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label class="form-label">Жиры, 100 г. (Нетто)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="newProductForm.fats"
+                  step="0.01"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="mb-3">
+                <label class="form-label">Углеводы, 100 г. (Нетто)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="newProductForm.carbohydrates"
+                  step="0.01"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-secondary">Добавить</button>
+        </form>
+      </div>
+
       <div v-if="sortedProductsList.length > 0" class="mt-4">
         <small
           ><b>Всего записей - ({{ productList.count }})</b></small
@@ -36,7 +292,13 @@
           <tbody>
             <tr v-for="product in sortedProductsList" :key="product.id">
               <td>
-                <b>{{ product.product_name }}</b>
+                <button
+                  type="button"
+                  class="btn btn-link link-secondary p-0 m-0 text-start"
+                  @click="showModalForUpdate(product.id)"
+                >
+                  <b>{{ product.product_name }}</b>
+                </button>
                 <br />
                 Эн. цен - {{ product.energy_value }}<br />
                 Белки -{{ product.proteins }}<br />
@@ -47,22 +309,40 @@
                 v-for="treatment in treatmentKindList.results"
                 :key="treatment.id"
               >
-                <template
+                <p
                   v-for="dateRange in dateRangesList.results"
                   :key="dateRange.id"
+                  class="p-0 m-0"
                 >
                   <nobr
-                    >{{ dateRange.get_formatted_data }}&nbsp; &nbsp;
-                    <b>{{
-                      getWastage(
-                        product.wastage_list,
-                        treatment.id,
-                        dateRange.id
-                      )
-                    }}</b></nobr
-                  >
+                    ><button
+                      type="button"
+                      class="btn btn-link link-secondary p-0 m-0 text-start"
+                      @click="
+                        showModalForWastageUpdate(
+                          getWastage(
+                            product.wastage_list,
+                            treatment.id,
+                            dateRange.id
+                          ).id
+                        )
+                      "
+                    >
+                      {{ dateRange.get_formatted_data }}&nbsp;
+                    </button>
+
+                    <b>
+                      {{
+                        getWastage(
+                          product.wastage_list,
+                          treatment.id,
+                          dateRange.id
+                        ).percent
+                      }}%</b
+                    >
+                  </nobr>
                   <br />
-                </template>
+                </p>
               </td>
             </tr>
           </tbody>
@@ -89,6 +369,7 @@
           </ul>
         </nav>
       </div>
+      <div v-else class="mt-3"><h5>Список пуст</h5></div>
     </div>
   </div>
 </template>
@@ -108,8 +389,24 @@ export default {
       productList: { results: [] },
       treatmentKindList: { results: [] },
       dateRangesList: { results: [] },
-      currentProductForUpdate: {},
-      searchForm: {},
+      newProductForm: {
+        product_name: "",
+        energy_value: "",
+        proteins: "",
+        fats: "",
+        carbohydrates: "",
+      },
+      currentProductForUpdate: {
+        product_name: "",
+        energy_value: "",
+        proteins: "",
+        fats: "",
+        carbohydrates: "",
+      },
+      currentWastageForUpdate: { percent: "" },
+      searchForm: {
+        product_name: "",
+      },
       isLoading: true,
       isError: false,
     }
@@ -121,7 +418,10 @@ export default {
     async loadData() {
       this.isLoading = true
       try {
-        const response = await productsAPI.getItemsList(this.userToken)
+        const response = await productsAPI.getItemsList(
+          this.userToken,
+          this.searchForm
+        )
         this.productList = await response.data
 
         const responseTreatment = await productsAPI.getTreatmentsList(
@@ -139,9 +439,86 @@ export default {
         this.isLoading = false
       }
     },
-    async addNewProduct() {},
-    async updateProduct() {},
-    async showModalForUpdate() {},
+    async addNewProduct() {
+      this.isLoading = true
+      try {
+        await productsAPI.addItem(this.userToken, this.newProductForm)
+        await this.loadData()
+      } catch (error) {
+        this.isError = true
+      } finally {
+        this.newProductForm = {
+          product_name: "",
+          energy_value: "",
+          proteins: "",
+          fats: "",
+          carbohydrates: "",
+        }
+        this.isLoading = false
+      }
+    },
+    async showModalForUpdate(productId) {
+      this.isError = false
+      try {
+        const response = await productsAPI.getItemData(
+          this.userToken,
+          productId
+        )
+        this.currentProductForUpdate = await response.data
+        let updateModal = this.$refs.productUpdate
+        let myModal = new bootstrap.Modal(updateModal, {
+          keyboard: false,
+        })
+        myModal.show()
+      } catch (event) {
+        this.isError = true
+      } finally {
+      }
+    },
+    async showModalForWastageUpdate(wastageId) {
+      this.isError = false
+      try {
+        const response = await productsAPI.getWastageItem(
+          this.userToken,
+          wastageId
+        )
+        this.currentWastageForUpdate = await response.data
+        let updateModal = this.$refs.wastageUpdate
+        let myModal = new bootstrap.Modal(updateModal, {
+          keyboard: false,
+        })
+        myModal.show()
+      } catch (event) {
+        this.isError = true
+      } finally {
+      }
+    },
+    async updateProduct() {
+      try {
+        await productsAPI.updateItem(
+          this.userToken,
+          this.currentProductForUpdate
+        )
+        await this.loadData()
+        this.$refs.closeProductUpdateModal.click()
+      } catch (error) {
+        this.isError = true
+      } finally {
+      }
+    },
+    async updateWastage() {
+      try {
+        await productsAPI.updateWastageItem(
+          this.userToken,
+          this.currentWastageForUpdate
+        )
+        await this.loadData()
+        this.$refs.closeWastageUpdateModal.click()
+      } catch (error) {
+        this.isError = true
+      } finally {
+      }
+    },
     async updatePaginator(url) {
       this.isLoading = true
       try {
@@ -158,14 +535,8 @@ export default {
     }, 500),
     deleteCheckedProductsHandler() {},
     checkAllHandler() {},
-    getFormattedDateComponent(dateTime) {
-      return getFormattedDate(dateTime)
-    },
-    getFormattedTimeComponent(dateTime) {
-      return getFormattedTime(dateTime)
-    },
     getWastage(wastageList, treatment, dateRange) {
-      let result = null
+      let result
       wastageList.map((item) => {
         if (
           item.treatment_kind === treatment &&
@@ -174,9 +545,7 @@ export default {
           result = item
         }
       })
-
-      const resultReturn = result.percent !== 0 ? result.percent : ""
-      return resultReturn
+      return result
     },
   },
   computed: {
