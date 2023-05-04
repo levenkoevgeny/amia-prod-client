@@ -20,32 +20,19 @@
               >Раскладка меню</a
             >
           </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+
+          <li class="nav-item">
+            <a class="nav-link" href="/menu/products">Продукты</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/menu/products-groups"
+              >Группы продуктов (нормы)</a
             >
-              Наименования
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li>
-                <a class="dropdown-item" href="/menu/products">Продукты</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="/menu/products-groups"
-                  >Группы продуктов (нормы)</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item" href="/menu/products-maps"
-                  >Технологические карты</a
-                >
-              </li>
-            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/menu/products-maps"
+              >Технологические карты</a
+            >
           </li>
         </ul>
       </div>

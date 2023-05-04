@@ -181,7 +181,6 @@
               type="text"
               class="form-control"
               v-model="searchForm.product_name"
-              required
             />
           </div>
         </div>
@@ -272,7 +271,7 @@
         <small
           ><b>Всего записей - ({{ productList.count }})</b></small
         >
-        <table class="table">
+        <table class="table mt-2">
           <thead>
             <tr>
               <th rowspan="2">Наименование</th>

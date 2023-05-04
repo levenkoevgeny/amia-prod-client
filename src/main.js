@@ -6,6 +6,7 @@ import { library } from "@fortawesome/fontawesome-svg-core"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
+import Select2 from "vue3-select2-component"
 
 import { faUsers } from "@fortawesome/free-solid-svg-icons"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
@@ -19,22 +20,25 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons"
 import { faUnlock } from "@fortawesome/free-solid-svg-icons"
 import { faLock } from "@fortawesome/free-solid-svg-icons"
 import { faCar } from "@fortawesome/free-solid-svg-icons"
+import { faTrash } from "@fortawesome/free-solid-svg-icons"
 
-library.add(faUsers)
-library.add(faUser)
-library.add(faFile)
-library.add(faPlus)
-library.add(faFileExport)
-library.add(faBook)
-library.add(faList)
-library.add(faMapLocation)
-library.add(faCalendar)
-library.add(faUnlock)
-library.add(faLock)
-library.add(faCar)
+// library.add(faUsers)
+// library.add(faUser)
+// library.add(faFile)
+// library.add(faPlus)
+// library.add(faFileExport)
+// library.add(faBook)
+// library.add(faList)
+// library.add(faMapLocation)
+// library.add(faCalendar)
+// library.add(faUnlock)
+// library.add(faLock)
+// library.add(faCar)
+library.add(faTrash)
 
 createApp(App)
   .component("font-awesome-icon", FontAwesomeIcon)
+  .component("Select2", Select2)
   .use(router)
   .use(store)
   .use(Toast)
