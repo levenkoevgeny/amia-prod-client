@@ -1,5 +1,5 @@
 <template>
-  <!--product update modal-->
+  <!--group update modal-->
   <div
     class="modal fade"
     id="updateProductGroupModal"
@@ -89,7 +89,7 @@
       </div>
     </div>
   </div>
-  <!--product update modal-->
+  <!--group update modal-->
 
   <div class="alert alert-danger" role="alert" v-if="isError">
     Ошибка приложения
@@ -220,40 +220,49 @@
               :key="productGroup.id"
             >
               <td>
-                <button
-                  type="button"
-                  class="btn btn-link link-secondary p-0 m-0 text-start"
-                  @click="showModalForUpdate(productGroup.id)"
+                <div
+                  class="d-flex flex-row align-items-start justify-content-start"
                 >
-                  <b>{{ productGroup.group_name }}</b>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-link link-danger p-0 m-0 text-start"
-                  @click="deleteProductsGroup(productGroup.id)"
-                >
-                  <font-awesome-icon icon="fa-solid fa-trash" v-once />
-                </button>
+                  <button
+                    type="button"
+                    class="btn btn-link link-secondary p-0 m-0 text-start"
+                    @click="showModalForUpdate(productGroup.id)"
+                  >
+                    <b>{{ productGroup.group_name }}</b></button
+                  >&nbsp;&nbsp;&nbsp;
+                  <button
+                    type="button"
+                    class="btn btn-link link-danger p-0 m-0 text-start"
+                    @click="deleteProductsGroup(productGroup.id)"
+                  >
+                    <font-awesome-icon icon="fa-solid fa-trash" v-once />
+                  </button>
+                </div>
               </td>
               <td>{{ productGroup.norm_per_day }}</td>
               <td>
                 <template v-for="replacement in productGroup.replacements">
                   <template v-if="replacement.id !== productGroup.id">
-                    <button
-                      type="button"
-                      class="btn btn-link link-secondary p-0 m-0 text-start"
-                      @click="showModalForUpdate(replacement.id)"
+                    <div
+                      class="d-flex flex-row align-items-start justify-content-start"
                     >
-                      {{ replacement.group_name }} -
-                      {{ replacement.in_count }} г.
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-link link-danger p-0 m-0 text-start"
-                      @click="deleteProductsGroup(productGroup.id)"
-                    >
-                      <font-awesome-icon icon="fa-solid fa-trash" v-once />
-                    </button>
+                      <button
+                        type="button"
+                        class="btn btn-link link-secondary p-0 m-0 text-start"
+                        @click="showModalForUpdate(replacement.id)"
+                      >
+                        {{ replacement.group_name }} -
+                        {{ replacement.in_count }} г.</button
+                      >&nbsp;&nbsp;&nbsp;
+                      <button
+                        type="button"
+                        class="btn btn-link link-danger p-0 m-0 text-start"
+                        @click="deleteProductsGroup(productGroup.id)"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-trash" v-once />
+                      </button>
+                    </div>
+
                     <br />
                   </template>
                 </template>
