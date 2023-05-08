@@ -1,17 +1,16 @@
 import axios from "axios"
 import { authHeaders } from "@/api/authAPI"
 
-let base_url = "maps"
+let base_url = "products-in-map"
 
-export const productsMapAPI = {
-  async getItemsList(token, searchForm = { map_number: "", map_name: "" }) {
-    let { map_number, map_name } = searchForm
+export const productsInMapAPI = {
+  async getItemsList(token, searchForm = { map: "" }, limit = 10000) {
+    let { map } = searchForm
     return axios.get(
-      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/?map_number__icontains=${map_number}&map_name__icontains=${map_name}`,
+      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/?limit=${limit}&map=${map}`,
       authHeaders(token)
     )
   },
-
   async updateList(url, token) {
     return axios.get(url, authHeaders(token))
   },
@@ -31,14 +30,6 @@ export const productsMapAPI = {
     )
   },
 
-  async addItemClone(token, itemData) {
-    return axios.post(
-      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/${itemData.map_parent}/make_map_clone/`,
-      itemData,
-      authHeaders(token)
-    )
-  },
-
   async updateItem(token, itemData) {
     return axios.put(
       `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/${itemData.id}/`,
@@ -50,20 +41,6 @@ export const productsMapAPI = {
   async deleteItem(token, itemId) {
     return axios.delete(
       `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/${itemId}/`,
-      authHeaders(token)
-    )
-  },
-
-  async getDishCategoriesList(token) {
-    return axios.get(
-      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/dish-categories/`,
-      authHeaders(token)
-    )
-  },
-
-  async getTreatmentsList(token) {
-    return axios.get(
-      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/treatment-kinds/`,
       authHeaders(token)
     )
   },
