@@ -16,9 +16,10 @@ export const productsMapAPI = {
     return axios.get(url, authHeaders(token))
   },
 
-  async getItemData(token, itemId) {
+  async getItemData(token, itemId, searchForm = { menu_date: null }) {
+    let { menu_date } = searchForm
     return axios.get(
-      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/${itemId}`,
+      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/${itemId}/?menu_date=${menu_date}`,
       authHeaders(token)
     )
   },

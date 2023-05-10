@@ -406,6 +406,19 @@
           <button type="submit" class="btn btn-secondary">Добавить</button>
         </form>
       </div>
+      <br />
+      <div
+        class="input-group mb-4"
+        style="width: 400px"
+        v-if="sortedProductInMapList.length > 0"
+      >
+        <span class="input-group-text">Дата расчета</span>
+        <input
+          type="date"
+          class="form-control"
+          v-model="searchForm.menu_date"
+        />
+      </div>
 
       <div v-if="sortedProductInMapList.length > 0">
         <table class="table table-striped table-hover table-bordered">
@@ -568,7 +581,7 @@ export default {
         dish_category: null,
         treatments: [],
       },
-
+      searchForm: { menu_date: new Date().toJSON().slice(0, 10) },
       isLoading: true,
       isError: false,
     }
@@ -582,7 +595,8 @@ export default {
       try {
         const response = await productsMapAPI.getItemData(
           this.userToken,
-          this.$route.params.id
+          this.$route.params.id,
+          this.searchForm
         )
         this.map = await response.data
 
@@ -672,6 +686,13 @@ export default {
       } finally {
       }
     }, 500),
+    debouncedSearch: debounce(async function () {
+      try {
+        await this.loadData()
+      } catch (error) {
+      } finally {
+      }
+    }, 500),
   },
   computed: {
     ...mapGetters({
@@ -699,6 +720,12 @@ export default {
     map: {
       handler(newValue, oldValue) {
         this.debouncedMapUpdate()
+      },
+      deep: true,
+    },
+    searchForm: {
+      handler(newValue, oldValue) {
+        this.debouncedSearch()
       },
       deep: true,
     },

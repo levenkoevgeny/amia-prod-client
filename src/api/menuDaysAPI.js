@@ -1,19 +1,24 @@
 import axios from "axios"
 import { authHeaders } from "@/api/authAPI"
 
-let base_url = "product-groups"
+let base_url = "menu-days"
 
-export const productsGroupAPI = {
-  async getItemsList(token, searchForm = { group_name: "" }, limit = "") {
-    let { group_name } = searchForm
+export const menuDaysAPI = {
+  async getItemsList(
+    token,
+    searchForm = { date_start: "", date_end: "" },
+    limit = 100
+  ) {
+    let { date_start, date_end } = searchForm
     return axios.get(
-      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/?limit=${limit}&group_name__icontains=${group_name}`,
+      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/?limit=${limit}&menu_day_date__gte=${date_start}&menu_day_date__lte=${date_end}`,
       authHeaders(token)
     )
   },
   async updateList(url, token) {
     return axios.get(url, authHeaders(token))
   },
+
   async getItemData(token, itemId) {
     return axios.get(
       `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/${itemId}`,
@@ -40,6 +45,13 @@ export const productsGroupAPI = {
   async deleteItem(token, itemId) {
     return axios.delete(
       `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/${base_url}/${itemId}/`,
+      authHeaders(token)
+    )
+  },
+
+  async getMealTimeList(token) {
+    return axios.get(
+      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/meal-times/`,
       authHeaders(token)
     )
   },

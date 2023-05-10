@@ -304,7 +304,6 @@
 import Spinner from "@/components/common/Spinner"
 import { mapGetters } from "vuex"
 import { productsGroupAPI } from "@/api/productsGroupAPI"
-import { getFormattedDate, getFormattedTime } from "@/utils"
 import debounce from "lodash.debounce"
 import Select2 from "vue3-select2-component"
 
