@@ -55,4 +55,12 @@ export const menuDaysAPI = {
       authHeaders(token)
     )
   },
+
+  async getProducts(token, searchForm = { date_start: "", date_end: "" }) {
+    let { date_start, date_end } = searchForm
+    return axios.get(
+      `${process.env.VUE_APP_BACKEND_PROTOCOL}://${process.env.VUE_APP_BACKEND_HOST}:${process.env.VUE_APP_BACKEND_PORT}/api/menus/?menu_day_date_start=${date_start}&menu_day_date_end=${date_end}`,
+      authHeaders(token)
+    )
+  },
 }
